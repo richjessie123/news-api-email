@@ -1,5 +1,5 @@
 import requests
-
+from send_email import send_email
 
 api_key = "321ab006b85541148c96fe568e858067"
 
@@ -12,7 +12,14 @@ request = requests.get(url)
 # Get a dictionary with data
 content = request.json()
 
-# Print title and description of article
+body = ""
+# Print title and description of article and store in body variable
 for article in (content["articles"]):
-    print(article["title"])
-    print(article["description"])
+    if article["title"] is not None:
+        body = body + article["title"] + "\n" + article["description"] + 2*"\n"
+
+body = body.encode("utf-8")
+
+#Send email
+send_email(message=body)
+
